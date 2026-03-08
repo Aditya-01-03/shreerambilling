@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
     try {
         console.log("Seeding database...");
@@ -40,10 +42,10 @@ export async function GET() {
             { message: "Seeding completed successfully.", users: results },
             { status: 200 }
         );
-    } catch (error: any) {
+    } catch (error) {
         console.error("Error seeding database:", error);
         return NextResponse.json(
-            { error: "Failed to seed database", details: error.message },
+            { error: "Failed to seed database", details: error instanceof Error ? error.message : "Unknown error" },
             { status: 500 }
         );
     }
